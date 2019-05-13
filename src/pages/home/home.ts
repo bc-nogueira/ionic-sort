@@ -9,15 +9,14 @@ import moment from 'moment';
 export class HomePage {
   tamanho = 10000;
   numeroMax = 1000000;
-  array = this.preparaArray();
+  array = this.prepararArray();
   ordenado = false;
-  inicio: number;
-  duracao: number;
+  inicioTimer: number;
 
   constructor(public navCtrl: NavController, public toastController: ToastController) {
   }
 
-  preparaArray() {
+  prepararArray() {
     return Array.from({length: this.tamanho}, () => 
       Math.floor(Math.random() * this.numeroMax)
     );
@@ -25,7 +24,7 @@ export class HomePage {
 
   ordenar() {
     // const inicio = moment().format('MMMM Do YYYY, h:mm:ss a');
-    this.inicio = moment().valueOf();
+    this.inicioTimer = moment().valueOf();
     let items = this.array;
 
     for (let i = 0; i < this.tamanho; i++) { //Number of passes
@@ -42,13 +41,12 @@ export class HomePage {
 
     this.array = items;
     this.ordenado = true;
-    this.duracao = moment().valueOf() - this.inicio;
-    this.mostraToast();
+    this.mostrarToast();
   }
 
-  mostraToast() {
+  mostrarToast() {
     const toast = this.toastController.create({
-      message: this.duracao + "ms"
+      message: moment().valueOf() - this.inicioTimer + "ms"
     });
     toast.present();
   }
