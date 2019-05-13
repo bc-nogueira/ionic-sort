@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ToastController } from 'ionic-angular';
+import moment from 'moment';
 
 @Component({
   selector: 'page-home',
@@ -10,8 +11,10 @@ export class HomePage {
   numeroMax = 1000000;
   array = this.preparaArray();
   ordenado = false;
+  inicio: number;
+  duracao: number;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public toastController: ToastController) {
   }
 
   preparaArray() {
@@ -21,6 +24,8 @@ export class HomePage {
   }
 
   ordenar() {
+    // const inicio = moment().format('MMMM Do YYYY, h:mm:ss a');
+    this.inicio = moment().valueOf();
     let items = this.array;
 
     for (let i = 0; i < this.tamanho; i++) { //Number of passes
@@ -37,5 +42,14 @@ export class HomePage {
 
     this.array = items;
     this.ordenado = true;
+    this.duracao = moment().valueOf() - this.inicio;
+    this.mostraToast();
+  }
+
+  mostraToast() {
+    const toast = this.toastController.create({
+      message: this.duracao + "ms"
+    });
+    toast.present();
   }
 }
